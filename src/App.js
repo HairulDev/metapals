@@ -1,16 +1,14 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route, } from 'react-router-dom';
-import Header from './components/molecules/Header';
-import Home from './components/molecules/Home';
+import HomePage from './Pages/HomePage';
 
 
 const App = () => {
 
   return (
     <BrowserRouter>
-      <Header />
       <Switch>
-        <Route path="/" component={Home} />
+        <Route path="/" component={HomePage} />
       </Switch>
     </BrowserRouter>
   );
