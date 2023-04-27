@@ -1,24 +1,24 @@
-import { Button, Card, Container, Grid, InputAdornment, Menu, MenuItem, OutlinedInput, Slider, Typography, } from '@mui/material'
+import { Box, Button, Card, Container, Grid, InputAdornment, Menu, MenuItem, Modal, OutlinedInput, Slider, Typography, } from '@mui/material'
 import React, { useEffect, useState, useRef, } from 'react'
 import CircleIcon from '@mui/icons-material/Circle';
 import Draggable from 'react-draggable';
+import domtoimage from 'dom-to-image';
+import Fade from 'react-reveal/Fade';
+import DownloadIcon from '@mui/icons-material/Download';
+import chooseColor from './color';
 
-const chooseColor = [{
-    color: "rgb(254, 74,73)",
-},
-{
-    color: "rgb(42, 183,202)",
-},
-{
-    color: "rgb(254, 215, 102)",
-},
-{
-    color: "rgb(230, 230, 234)",
-},
-{
-    color: "rgb(244, 244, 248)",
-},
-]
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
+
 const Home = () => {
 
     const maxPrice = 72;
@@ -30,6 +30,7 @@ const Home = () => {
     const [value, setValue] = useState(startPoint);
     const [color, setColor] = useState(chooseColor[0].color);
     const [activeIndex, setActiveIndex] = useState(0);
+    const [openModal, setOpenModal] = useState(false);
     const [form, setForm] = useState(initialState);
     const { text } = form;
 
@@ -53,18 +54,32 @@ const Home = () => {
         setActiveIndex(index);
     };
 
-    console.log("color====>>", color);
+    const handleSaveImage = () => {
+        const paragraph = document.getElementById('p');
+        domtoimage.toPng(paragraph).then((dataUrl) => {
+            const link = document.createElement('a');
+            link.download = 'download.png';
+            link.href = dataUrl;
+            link.click();
+            setOpenModal(false);
+        });
+    };
+
 
     return (
-        <Container>
-            <Card sx={{ p: 2, justifyContent: "center", alignitems: "center", textAlign: "center" }}>
-                <Grid container >
+        <Container maxWidth="md" sx={{ mt: 2 }} >
+            <Card sx={{ p: 2, justifyContent: "center", alignitems: "center", textAlign: "center", }}>
+                <Grid container spacing={5}>
                     <Grid item xs={12}>
                         <Typography variant="body1" color="primary" >*The letters are draggable</Typography>
                         <Draggable>
-                            <p id="p">{text}</p>
+                            <p id="p"
+                                style={{
+                                    fontFamily: 'monospace',
+                                    fontWeight: 'bold'
+                                }}
+                            >{text}</p>
                         </Draggable>
-
                     </Grid>
                     <Grid item xs={12}>
                         <OutlinedInput
@@ -95,13 +110,30 @@ const Home = () => {
                                 data-index={index}
                                 style={{
                                     backgroundColor: choose.color, marginRight: 5, minHeight: 50,
-                                    border: index === activeIndex ? '3px solid black' : 'none' // tambahkan border jika button aktif
+                                    border: index === activeIndex ? '3px solid black' : 'none'
                                 }} />
                         ))}
                     </Grid>
+                    <Grid item xs={12}>
+                        <Button variant="contained" onClick={() => setOpenModal(true)}>
+                            <DownloadIcon /> Save
+                        </Button>
+                    </Grid>
+
                 </Grid>
             </Card>
-        </Container>
+
+            <Modal
+                open={openModal}
+                onClose={() => setOpenModal(false)}>
+                <Box sx={style}>
+                    <Button variant="contained" onClick={handleSaveImage}>
+                        Download Image
+                    </Button>
+
+                </Box>
+            </Modal>
+        </Container >
     )
 }
 
