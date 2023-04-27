@@ -8,12 +8,10 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <div className='container'>
-        <Header />
-        <Switch>
-          <Route path="/" component={Home} />
-        </Switch>
-      </div>
+      <Header />
+      <Switch>
+        <Route path="/" component={Home} />
+      </Switch>
     </BrowserRouter>
   );
 };
