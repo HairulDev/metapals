@@ -56,14 +56,19 @@ const Home = () => {
 
     const handleSaveImage = () => {
         const paragraph = document.getElementById('p');
-        domtoimage.toPng(paragraph).then((dataUrl) => {
-            const link = document.createElement('a');
-            link.download = 'download.png';
-            link.href = dataUrl;
-            link.click();
-            setOpenModal(false);
-        });
+        domtoimage.toPng(paragraph, {
+            height: paragraph.offsetHeight + 50,
+            width: paragraph.offsetWidth + 20
+        })
+            .then((dataUrl) => {
+                const link = document.createElement('a');
+                link.download = 'download.png';
+                link.href = dataUrl;
+                link.click();
+                setOpenModal(false);
+            });
     };
+
 
 
     return (
