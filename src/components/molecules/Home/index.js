@@ -73,13 +73,19 @@ const Home = () => {
                     <Grid item xs={12}>
                         <Typography variant="body1" color="primary" >*The letters are draggable</Typography>
                         <Draggable>
-                            <p id="p"
-                                style={{
-                                    fontFamily: 'monospace',
-                                    fontWeight: 'bold'
-                                }}
-                            >{text}</p>
+                            <div>
+                                <Fade bottom cascade>
+                                    <p id="p"
+                                        style={{
+                                            fontFamily: 'monospace',
+                                            fontWeight: 'bold'
+                                        }}
+                                    >{text}</p>
+                                </Fade>
+                            </div>
                         </Draggable>
+
+
                     </Grid>
                     <Grid item xs={12}>
                         <OutlinedInput
